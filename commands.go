@@ -1,18 +1,28 @@
 package main
 
 import (
+	"math/big"
 	"encoding/gob"
 	"fmt"
 	"os"
 )
 
 var commands = map[string]func(s *stack) error{
-	"p": func(s *stack) error {
+	"f": func(s *stack) error {
 		n, err := s.Peek()
 		if err != nil {
 			return err
 		}
 		fmt.Println(n)
+		return nil
+	},
+	"d": func(s *stack) error {
+		n, err := s.Peek()
+		if err != nil {
+			return err
+		}
+		f := new(big.Float).SetPrec(256)
+		fmt.Println(f.SetRat(n).Text('g', 64))
 		return nil
 	},
 	"s": func(s *stack) error {
