@@ -1,5 +1,10 @@
 # RPN calculator
 
+![latest version](https://img.shields.io/github/v/tag/patrickmcnamara/rpn?label=latest%20version)
+![last commit](https://img.shields.io/github/last-commit/patrickmcnamara/rpn)
+![top language](https://img.shields.io/github/languages/top/patrickmcnamara/rpn)
+![licence](https://img.shields.io/github/license/patrickmcnamara/rpn?label=licence)
+
 I wrote this because I don't like `dc`.
 This is far worse, however.
 
@@ -58,4 +63,4 @@ Binary operations pop two numbers off the stack as operands.
 
 ## Licence
 
-Licenced under the EUPL-1.2.
+This project is licenced under the European Union Public Licence v1.2.
