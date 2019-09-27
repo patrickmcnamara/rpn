@@ -1,13 +1,16 @@
 package main
 
 import (
-	"math/big"
 	"encoding/gob"
 	"fmt"
+	"math/big"
 	"os"
 )
 
 var commands = map[string]func(s *stack) error{
+	"": func(s *stack) error {
+		return nil
+	},
 	"f": func(s *stack) error {
 		n, err := s.Peek()
 		if err != nil {
