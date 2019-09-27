@@ -85,4 +85,8 @@ var commands = map[string]func(s *stack) error{
 		dec.Decode(&s)
 		return nil
 	},
+	"Q": func(s *stack) error {
+		os.Exit(0)
+		return nil
+	},
 }

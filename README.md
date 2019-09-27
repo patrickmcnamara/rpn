@@ -32,11 +32,12 @@ Run `rpn`, assuming your $GOPATH is in your $PATH, and you can begin entering co
 | `C`   | clear     | clears the stack                        |
 | `S`   | save      | saves the stack to disk                 |
 | `L`   | load      | loads the stack from disk               |
+| `Q`   | quit      | quits `rpn`                             |
 
 The `S` and `L` commands save and load a file called `rpn` in the default cache directory for the current user.
 This is typically `~/.config/` for GNU/Linux.
 
-To exit, send an EOF to `stdin`. This is typically with done `Ctrl` + `D` for GNU/Linux.
+As well as the `Q` command, an EOF to `stdin` will exit the program.
 
 ### Operations
 
