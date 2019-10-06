@@ -42,10 +42,11 @@ func binaryOperator(s *stack, binOp func(x, y *big.Rat) *big.Rat) (err error) {
 	return err
 }
 
-func pushNumber(s *stack, input string) {
+func pushNumber(s *stack, input string) error {
 	n, ok := new(big.Rat).SetString(input)
 	if !ok {
-		chk(errInvalidInput)
+		return errInvalidInput
 	}
 	s.Push(n)
+	return nil
 }

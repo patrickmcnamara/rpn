@@ -20,7 +20,7 @@ func main() {
 		} else if binOp, ok := binaryOperators[input]; ok {
 			chk(binaryOperator(&stck, binOp))
 		} else {
-			pushNumber(&stck, input)
+			chk(pushNumber(&stck, input))
 		}
 	}
 }
