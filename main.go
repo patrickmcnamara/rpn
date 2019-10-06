@@ -13,7 +13,9 @@ func main() {
 	for scnr.Scan() {
 		input := scnr.Text()
 
-		if cmd, ok := commands[input]; ok {
+		if len(input) >= 1 && input[0] == '#' || input == "" {
+			continue
+		} else if cmd, ok := commands[input]; ok {
 			chk(cmd(&stck))
 		} else if unOp, ok := unaryOperators[input]; ok {
 			chk(unaryOperator(&stck, unOp))
