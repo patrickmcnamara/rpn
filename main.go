@@ -10,10 +10,15 @@ func main() {
 	scnr := bufio.NewScanner(os.Stdin)
 	stck := make(stack, 0)
 
+	chk := func(err error) {
+		if err != nil {
+			fmt.Fprintln(os.Stderr, fmt.Errorf("rpn: %w", err))
+		}
+	}
+
 	for scnr.Scan() {
 		input := scnr.Text()
-
-		if len(input) >= 1 && input[0] == '#' || input == "" {
+		if input == "" || input[0] == '#' {
 			continue
 		} else if cmd, ok := commands[input]; ok {
 			chk(cmd(&stck))
@@ -24,12 +29,5 @@ func main() {
 		} else {
 			chk(pushNumber(&stck, input))
 		}
-	}
-}
-
-func chk(err error) {
-	if err != nil {
-		fmt.Fprintln(os.Stderr, fmt.Errorf("rpn: %w", err))
-		os.Exit(1)
 	}
 }

@@ -43,6 +43,7 @@ func (s *stack) Reverse() error {
 	}
 	m, err := s.Pop()
 	if err != nil {
+		s.Push(n)
 		return errRevLenOneStack
 	}
 	s.Push(n)

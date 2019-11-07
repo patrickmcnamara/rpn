@@ -25,11 +25,6 @@ func unaryOperator(s *stack, unOp func(x *big.Rat) *big.Rat) error {
 }
 
 func binaryOperator(s *stack, binOp func(x, y *big.Rat) *big.Rat) (err error) {
-	defer func() {
-		if recover() != nil {
-			err = errDivByZero
-		}
-	}()
 	y, err := s.Pop()
 	if err != nil {
 		return err
@@ -37,6 +32,11 @@ func binaryOperator(s *stack, binOp func(x, y *big.Rat) *big.Rat) (err error) {
 	x, err := s.Pop()
 	if err != nil {
 		return err
+	}
+	if x.Cmp(new(big.Rat)) == 0 {
+		s.Push(x)
+		s.Push(y)
+		return errDivByZero
 	}
 	s.Push(binOp(x, y))
 	return err
