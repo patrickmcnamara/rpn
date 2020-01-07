@@ -1,45 +1,55 @@
 package main
 
-import "math/big"
+import (
+	"math/big"
+)
 
-var unaryOperators = map[string]func(x *big.Rat) *big.Rat{
-	"n": func(x *big.Rat) *big.Rat { return new(big.Rat).Neg(x) },
-	"a": func(x *big.Rat) *big.Rat { return new(big.Rat).Abs(x) },
-	"i": func(x *big.Rat) *big.Rat { return new(big.Rat).Inv(x) },
+var unaryOperators = map[string]func(x *big.Rat) (*big.Rat, error){
+	"n": func(x *big.Rat) (*big.Rat, error) { return new(big.Rat).Neg(x), nil },
+	"a": func(x *big.Rat) (*big.Rat, error) { return new(big.Rat).Abs(x), nil },
+	"i": func(x *big.Rat) (*big.Rat, error) { return new(big.Rat).Inv(x), nil },
 }
 
-var binaryOperators = map[string]func(x, y *big.Rat) *big.Rat{
-	"+": func(x, y *big.Rat) *big.Rat { return new(big.Rat).Add(x, y) },
-	"-": func(x, y *big.Rat) *big.Rat { return new(big.Rat).Sub(x, y) },
-	"*": func(x, y *big.Rat) *big.Rat { return new(big.Rat).Mul(x, y) },
-	"/": func(x, y *big.Rat) *big.Rat { return new(big.Rat).Quo(x, y) },
+var binaryOperators = map[string]func(x, y *big.Rat) (*big.Rat, error){
+	"+": func(x, y *big.Rat) (*big.Rat, error) { return new(big.Rat).Add(x, y), nil },
+	"-": func(x, y *big.Rat) (*big.Rat, error) { return new(big.Rat).Sub(x, y), nil },
+	"*": func(x, y *big.Rat) (*big.Rat, error) { return new(big.Rat).Mul(x, y), nil },
+	"/": func(x, y *big.Rat) (*big.Rat, error) {
+		if y.Cmp(big.NewRat(0, 1)) == 0 {
+			return nil, errDivByZero
+		}
+		return new(big.Rat).Quo(x, y), nil
+	},
 }
 
-func unaryOperator(s *stack, unOp func(x *big.Rat) *big.Rat) error {
+func unaryOperator(s *stack, unOp func(x *big.Rat) (*big.Rat, error)) (err error) {
 	x, err := s.Pop()
 	if err != nil {
-		return err
+		return
 	}
-	s.Push(unOp(x))
-	return nil
+	n, err := unOp(x)
+	if err != nil {
+		return
+	}
+	s.Push(n)
+	return
 }
 
-func binaryOperator(s *stack, binOp func(x, y *big.Rat) *big.Rat) (err error) {
+func binaryOperator(s *stack, binOp func(x, y *big.Rat) (*big.Rat, error)) (err error) {
 	y, err := s.Pop()
 	if err != nil {
-		return err
+		return
 	}
 	x, err := s.Pop()
 	if err != nil {
-		return err
+		return
 	}
-	if x.Cmp(new(big.Rat)) == 0 {
-		s.Push(x)
-		s.Push(y)
-		return errDivByZero
+	n, err := binOp(x, y)
+	if err != nil {
+		return
 	}
-	s.Push(binOp(x, y))
-	return err
+	s.Push(n)
+	return
 }
 
 func pushNumber(s *stack, input string) error {
