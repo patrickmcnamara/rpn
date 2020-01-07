@@ -3,7 +3,7 @@
 ![latest version](https://img.shields.io/github/v/tag/patrickmcnamara/rpn?label=latest%20version)
 ![last commit](https://img.shields.io/github/last-commit/patrickmcnamara/rpn)
 ![top language](https://img.shields.io/github/languages/top/patrickmcnamara/rpn)
-![licence](https://img.shields.io/github/license/patrickmcnamara/rpn?label=licence)
+![license](https://img.shields.io/github/license/patrickmcnamara/rpn?label=license)
 
 I wrote this because I don't like `dc`.
 This is far worse, however.
@@ -62,6 +62,6 @@ Binary operations pop two numbers off the stack as operands.
 | `*`   | multiply  | multiplies the numbers |
 | `/`   | divide    | divides the numbers    |
 
-## Licence
+## License
 
-This project is licenced under the European Union Public Licence v1.2.
+This project is licensed under the GNU General Public License v3.0.
