@@ -29,6 +29,7 @@ func unaryOperator(s *stack, unOp func(x *big.Rat) (*big.Rat, error)) (err error
 	}
 	n, err := unOp(x)
 	if err != nil {
+		s.Push(x)
 		return
 	}
 	s.Push(n)
@@ -42,10 +43,13 @@ func binaryOperator(s *stack, binOp func(x, y *big.Rat) (*big.Rat, error)) (err 
 	}
 	x, err := s.Pop()
 	if err != nil {
+		s.Push(y)
 		return
 	}
 	n, err := binOp(x, y)
 	if err != nil {
+		s.Push(x)
+		s.Push(y)
 		return
 	}
 	s.Push(n)
