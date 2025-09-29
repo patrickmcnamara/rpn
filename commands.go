@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/big"
 	"os"
+	"strings"
 )
 
 var commands = map[string]func(s *stack) error{
@@ -21,12 +22,29 @@ var commands = map[string]func(s *stack) error{
 		if err != nil {
 			return err
 		}
-		f := new(big.Float).SetPrec(256)
-		fmt.Println(f.SetRat(n).Text('g', 64))
+		fmt.Println(new(big.Float).SetPrec(256).SetRat(n).Text('g', 64))
 		return nil
 	},
-	"s": func(s *stack) error {
-		fmt.Println(*s)
+	"sf": func(s *stack) error {
+		var ss strings.Builder
+		for i, n := range *s {
+			ss.WriteString(n.RatString())
+			if i != len(*s) {
+				ss.WriteByte(' ')
+			}
+		}
+		fmt.Println(ss.String())
+		return nil
+	},
+	"sd": func(s *stack) error {
+		var ss strings.Builder
+		for i, n := range *s {
+			ss.WriteString(new(big.Float).SetPrec(256).SetRat(n).Text('g', 4))
+			if i != len(*s) {
+				ss.WriteByte(' ')
+			}
+		}
+		fmt.Println(ss.String())
 		return nil
 	},
 	"P": func(s *stack) error {
@@ -60,10 +78,10 @@ var commands = map[string]func(s *stack) error{
 			return err
 		}
 		fd, err := os.Create(cacheDir + "/rpn")
-		defer fd.Close()
 		if err != nil {
 			return err
 		}
+		defer fd.Close()
 		enc := gob.NewEncoder(fd)
 		enc.Encode(s)
 		return nil
@@ -74,16 +92,12 @@ var commands = map[string]func(s *stack) error{
 			return err
 		}
 		fd, err := os.Open(cacheDir + "/rpn")
-		defer fd.Close()
 		if err != nil {
 			return err
 		}
+		defer fd.Close()
 		dec := gob.NewDecoder(fd)
 		dec.Decode(&s)
-		return nil
-	},
-	"Q": func(s *stack) error {
-		os.Exit(0)
 		return nil
 	},
 }
